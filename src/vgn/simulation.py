@@ -1,6 +1,6 @@
 from pathlib import Path
 import time
-
+import os
 import numpy as np
 import pybullet
 
@@ -10,12 +10,14 @@ from vgn.utils import btsim, workspace_lines
 from vgn.utils.transform import Rotation, Transform
 from vgn.utils.misc import apply_noise, apply_translational_noise
 
+# set base directory
+base_dir = os.path.abspath(os.path.dirname(__file__) + '../../../')
 
 class ClutterRemovalSim(object):
     def __init__(self, scene, object_set, gui=True, seed=None, add_noise=False, sideview=False, save_dir=None, save_freq=8):
         assert scene in ["pile", "packed"]
 
-        self.urdf_root = Path("data/urdfs")
+        self.urdf_root = Path(os.path.join(base_dir, "data/urdfs"))
         self.scene = scene
         self.object_set = object_set
         self.discover_objects()
@@ -268,8 +270,7 @@ class Gripper(object):
 
     def __init__(self, world):
         self.world = world
-        self.urdf_path = Path("data/urdfs/panda/hand.urdf")
-
+        self.urdf_path = Path(os.path.join(base_dir, "data/urdfs/panda/hand.urdf"))
         self.max_opening_width = 0.08
         self.finger_depth = 0.05
         self.T_body_tcp = Transform(Rotation.identity(), [0.0, 0.0, 0.022])
